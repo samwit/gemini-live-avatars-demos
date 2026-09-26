@@ -1,0 +1,5 @@
+google-genai>=2.25.0
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-dotenv>=1.0
+websockets>=13

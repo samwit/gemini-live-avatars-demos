@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Polyglot Café · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>☕ The Polyglot Café</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · Piper · Leda</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay"><img src="/img/avatars/piper.jpg" alt=""><span>Pick a city and level, then Start</span></div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+        <div class="name-tag" id="cafeTag">Le Petit Zinc · Paris</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn" title="Hold things up to learn their names">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting mid-sentence (use headphones)"><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="Order something (in any language)…" autocomplete="off">
+        <button class="btn">Send</button>
+      </form>
+    </section>
+
+    <section class="col side">
+      <div class="panel">
+        <h2>Teleport the café <small style="text-transform:none;letter-spacing:0">(works mid-conversation)</small></h2>
+        <div class="cities" id="cities"></div>
+        <div class="row" style="margin-top:10px">
+          <label class="field">Level
+            <select id="level">
+              <option value="beginner">Beginner (slow, with English hints)</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced (native speed + slang)</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="side-grid">
+        <div class="panel">
+          <h2>Vocabulary</h2>
+          <div class="cards" id="vocab"><div class="note">New words appear here.</div></div>
+        </div>
+        <div class="panel">
+          <h2>Corrections &amp; receipt</h2>
+          <div class="cards" id="corrections"><div class="note">Gentle corrections appear here.</div></div>
+        </div>
+      </div>
+      <div class="panel" style="flex:0 0 220px;display:flex;flex-direction:column;min-height:0">
+        <h2>Transcript</h2>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/polyglot.js"></script>
+</body>
+</html>

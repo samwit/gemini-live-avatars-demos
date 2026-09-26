@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gemini Live Avatar demos</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>✨ Gemini Live Avatar demos</h1>
+    <span class="spacer"></span>
+    <span class="model" id="model"></span>
+  </header>
+
+  <section class="hero">
+    <h2>Real-time talking avatars,<br>driven by Gemini 3.8 Live.</h2>
+    <p>
+      Each demo streams your voice (and optionally your camera) to Gemini and gets back a lip-synced
+      video of an avatar that talks, listens, uses tools and can be interrupted. Pick one below.
+    </p>
+    <div class="cast" id="cast"></div>
+  </section>
+
+  <section class="grid" id="demos"></section>
+
+  <section class="scripts">
+    <p>
+      Prefer the terminal? Try <code>scripts/01_hello_avatar.py</code> (smallest possible example),
+      <code>scripts/02_raw_websocket.py</code> (the wire protocol, no SDK), and
+      <code>scripts/03_script_to_video.py</code> (turn a script into a talking-head MP4).
+    </p>
+  </section>
+
+  <script type="module">
+    // Build the gallery from /api/catalog, so adding a demo in Python adds a card here.
+    const cat = await (await fetch("/api/catalog")).json();
+    document.getElementById("model").textContent = cat.model;
+
+    for (const [name, a] of Object.entries(cat.avatars)) {
+      const fig = document.createElement("figure");
+      fig.innerHTML = `<img src="/img/avatars/${name.toLowerCase()}.jpg" alt="${name}" title="${a.look}">${name}`;
+      document.getElementById("cast").append(fig);
+    }
+
+    const avatarFor = { debate: "leo" };
+    for (const d of cat.demos) {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = `/${d.id}.html`;
+      card.innerHTML = `
+        <img src="/img/avatars/${avatarFor[d.id] || d.avatar.toLowerCase()}.jpg" alt="">
+        <div>
+          <h3>${d.emoji} ${d.title}</h3>
+          <p>${d.tagline}</p>
+          <div class="tags">${d.features.map((f) => `<span class="tag">${f}</span>`).join("")}</div>
+        </div>`;
+      document.getElementById("demos").append(card);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+Welcome to this quick tour of Gemini Live Avatar. Everything you're watching right now was generated in real time from a text file.
+
+I'm one of eleven prebuilt avatars, and my voice is one of thirty. Any face can be paired with any voice, and I can speak nearly a hundred languages.
+
+The same API that powers this recording also powers live conversations. You can interrupt me, show me things on your camera, and I can call tools while we talk.
+
+Thanks for watching. Now go build something delightful.

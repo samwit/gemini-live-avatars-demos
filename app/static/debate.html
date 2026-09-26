@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avatar Debate Club · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>⚖️ Avatar Debate Club</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live × 2 sessions</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage duo">
+    <div class="duo-stage">
+      <!-- Debater A (stream 0) -->
+      <div>
+        <div class="avatar-frame" id="frameA">
+          <video id="avatarA" class="avatar" playsinline></video>
+          <div class="overlay" id="overlayA"><img id="posterA" src="/img/avatars/leo.jpg" alt=""><span>FOR</span></div>
+          <div class="name-tag" id="nameA">Leo</div>
+        </div>
+        <div class="side-label for">FOR the motion</div>
+      </div>
+
+      <!-- Moderator desk -->
+      <div class="col">
+        <div class="panel">
+          <div id="setup">
+            <label class="field">Motion
+              <input class="text" id="motion" value="This house believes pineapple belongs on pizza">
+            </label>
+            <div class="row" style="margin-top:8px">
+              <label class="field">For <select id="avatarA_sel"></select></label>
+              <label class="field">Against <select id="avatarB_sel"></select></label>
+              <label class="field">Rounds <select id="rounds"><option>2</option><option selected>3</option><option>4</option></select></label>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px" id="motionIdeas"></div>
+          </div>
+          <div id="liveMotion" class="motion hidden"></div>
+          <div class="controls" style="margin-top:10px">
+            <button id="startBtn" class="btn primary">Start debate</button>
+            <span id="turnInfo" class="note"></span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Moderator</h2>
+          <form id="composer" class="composer">
+            <input id="textInput" placeholder="Interject (goes to the next speaker)…" autocomplete="off">
+            <button class="btn">Interject</button>
+          </form>
+          <div id="verdictBox" class="hidden" style="margin-top:10px">
+            <div class="note" style="margin-bottom:6px">The debate is over. Who won?</div>
+            <div class="row">
+              <button class="btn" id="winA">🏆 <span id="winAName">A</span></button>
+              <button class="btn" id="winB">🏆 <span id="winBName">B</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:260px;max-height:calc(100vh - 470px)">
+          <h2>Transcript</h2>
+          <div id="transcript" class="transcript"></div>
+        </div>
+      </div>
+
+      <!-- Debater B (stream 1) -->
+      <div>
+        <div class="avatar-frame" id="frameB">
+          <video id="avatarB" class="avatar" playsinline></video>
+          <div class="overlay" id="overlayB"><img id="posterB" src="/img/avatars/carmen.jpg" alt=""><span>AGAINST</span></div>
+          <div class="name-tag" id="nameB">Carmen</div>
+        </div>
+        <div class="side-label against">AGAINST the motion</div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="/js/demos/debate.js"></script>
+</body>
+</html>

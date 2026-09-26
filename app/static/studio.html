@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Avatar Studio · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>🎛️ Avatar Studio</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <!-- Left: the avatar and the standard controls (wired up by shell.js) -->
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay"><img id="poster" src="/img/avatars/kira.jpg" alt=""><span>Press Start</span></div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting the avatar mid-sentence. Use headphones, or it will hear itself."><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="Type a message…" autocomplete="off">
+        <button class="btn">Send</button>
+      </form>
+    </section>
+
+    <!-- Right: studio settings + transcript -->
+    <section class="col side">
+      <div class="panel">
+        <h2>Avatar <small id="avatarLook" style="text-transform:none;letter-spacing:0"></small></h2>
+        <div class="picker" id="picker"></div>
+      </div>
+      <div class="panel">
+        <div class="row">
+          <label class="field">Voice <select id="voice"></select></label>
+          <label class="field">Persona preset <select id="preset"></select></label>
+        </div>
+        <label class="field" style="margin-top:10px">System instruction
+          <textarea id="persona"></textarea>
+        </label>
+        <label class="toggle" style="margin-top:8px"><input type="checkbox" id="search"> 🔎 Ground answers with Google Search</label>
+        <p class="note" style="text-align:left;margin:6px 0 0">Settings apply when you press Start.</p>
+      </div>
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:220px">
+        <h2>Transcript</h2>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/studio.js"></script>
+</body>
+</html>

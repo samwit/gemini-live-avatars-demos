@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Interrogation Room · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>🕵️ The Interrogation Room</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · Paul · Algenib</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay"><img src="/img/avatars/paul.jpg" alt=""><span>Press Start to enter the room</span></div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+        <div class="name-tag">Desmond Price · Suspect</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn" title="Let him see you glare at him">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting mid-sentence (use headphones)"><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="Ask the suspect a question…" autocomplete="off">
+        <button class="btn">Ask</button>
+      </form>
+    </section>
+
+    <section class="col side">
+      <div class="side-grid" style="flex:0 0 auto">
+        <div class="panel">
+          <h2>Case file</h2>
+          <dl class="casefile" id="caseFile"><dd class="note">Press Start to open the case.</dd></dl>
+        </div>
+        <div class="panel">
+          <h2>Suspect composure</h2>
+          <div class="composure-bar"><div id="composure"></div></div>
+          <ul class="tells" id="tells"></ul>
+          <div id="verdict"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Evidence board <span id="clueCount"></span></h2>
+        <div class="board" id="board"></div>
+      </div>
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:180px">
+        <h2>Interview transcript</h2>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/interrogation.js"></script>
+</body>
+</html>

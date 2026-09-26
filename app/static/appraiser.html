@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Appraiser · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>🔍 The Appraiser</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · Sam · Sadaltager</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay"><img src="/img/avatars/sam.jpg" alt=""><span>Press Start, then hold something up to your camera</span></div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+        <div class="name-tag">Prof. Percival Hawthorne</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting mid-sentence (use headphones)"><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="No camera? Describe your item here…" autocomplete="off">
+        <button class="btn">Send</button>
+      </form>
+    </section>
+
+    <section class="col side">
+      <div class="side-grid" style="flex:0 0 auto">
+        <div class="panel">
+          <h2>On the table</h2>
+          <div id="onTable" class="note" style="text-align:left">Nothing yet. Hold an object up to the camera.</div>
+        </div>
+        <div class="panel">
+          <h2>Auction archives <small style="text-transform:none;letter-spacing:0">(async tool)</small></h2>
+          <div id="archives" class="note" style="text-align:left">Not consulted yet.</div>
+        </div>
+      </div>
+      <div class="panel" id="certPanel">
+        <h2>Certificate of appraisal</h2>
+        <div id="certificate" class="note" style="text-align:left">The professor will issue one when he's done.</div>
+      </div>
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:200px">
+        <h2>Transcript</h2>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/appraiser.js"></script>
+</body>
+</html>
