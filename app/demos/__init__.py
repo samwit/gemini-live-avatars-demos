@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """Registry of demos. Add a new demo by writing a Demo subclass and listing it here."""
 
 from .appraiser import Appraiser

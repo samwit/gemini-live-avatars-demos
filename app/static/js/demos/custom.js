@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // Be the Avatar: crop an uploaded photo to Google's spec, then start a session with it.
 //
 // Google's reference image requirements (Configure live avatars docs):

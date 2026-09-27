@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 03 - Script to video: use a *live* API as a talking-head video generator.
 

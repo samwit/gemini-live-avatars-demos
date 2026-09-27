@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // The Interrogation Room: case file, evidence board, composure meter, verdict.
 import { h, mountDemo } from "../shell.js";
 

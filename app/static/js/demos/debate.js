@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // Avatar Debate Club: two AvatarPlayers on ONE WebSocket.
 // Binary frames start with a stream byte (0 = "for", 1 = "against"), and
 // LiveClient routes each chunk to the right <video>. The turn-taking itself

@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // The Polyglot Café: city buttons (teleport mid-session), vocab and correction cards, receipt.
 import { h, mountDemo } from "../shell.js";
 

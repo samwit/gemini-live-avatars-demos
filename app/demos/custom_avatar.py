@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Demo 6: Be the Avatar. Upload a photo and talk to yourself (or anyone who's agreed).
 

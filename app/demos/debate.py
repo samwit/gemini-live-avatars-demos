@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Demo 5: Avatar Debate Club, two avatars arguing with each other.
 

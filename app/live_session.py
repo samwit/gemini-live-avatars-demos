@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 AvatarSession: a thin, well-commented wrapper around one Gemini Live session.
 

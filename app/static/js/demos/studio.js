@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // Avatar Studio: choose avatar + voice + persona, then talk.
 import { mountDemo } from "../shell.js";
 

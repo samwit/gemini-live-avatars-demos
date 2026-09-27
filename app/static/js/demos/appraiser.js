@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // The Appraiser: renders the widgets that the professor's tool calls drive.
 import { h, mountDemo } from "../shell.js";
 

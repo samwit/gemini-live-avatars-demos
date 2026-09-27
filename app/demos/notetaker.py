@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Demo 7: The Note Taker, a thinking partner that writes your notes by hand.
 

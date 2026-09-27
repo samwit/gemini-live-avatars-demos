@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Demo 4: The Polyglot Café, language immersion with a teleporting barista.
 

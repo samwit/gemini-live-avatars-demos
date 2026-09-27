@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 /**
  * LiveClient: the browser end of our WebSocket (see app/browser_link.py).
  *

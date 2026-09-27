@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 /**
  * AvatarPlayer: plays the avatar's live fragmented-MP4 stream in a <video>.
  *

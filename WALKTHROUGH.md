@@ -21,7 +21,7 @@ The same program with no SDK. Point out the three message types: `setup` (once),
 
 ### 3. `app/config.py`
 
-`make_client()` (line 49) is the only auth code in the repo. Point out:
+`make_client()` (line 53) is the only auth code in the repo. Point out:
 - Avatars live on Gemini Enterprise Agent Platform, so it's always `enterprise=True`.
 - API key (express mode) vs. ADC, plus the gcloud-token fallback for demos.
 - The warning about AI Studio keys: VIDEO modality is accepted but there's no avatar.
@@ -36,25 +36,25 @@ Read the module docstring first: it describes the stream format.
 
 | Look at | Why |
 |---|---|
-| `build_config()` (line ~136) | Everything sent in the setup message: VIDEO modality, avatar + bitrate, voice, tools, transcription, context-window compression. Background tools get `behavior: NON_BLOCKING` (line ~146). |
-| `send_image()` (line ~204) | **Gotcha:** camera frames go in `video=`; the documented `media=` is rejected by 3.8. |
-| `direct()` (line ~219) | Mid-session steering. `role="system"` content is ignored on 3.8, but a realtime "stage direction" works. |
+| `build_config()` (line 145) | Everything sent in the setup message: VIDEO modality, avatar + bitrate, voice, tools, transcription, context-window compression. Background tools get `behavior: NON_BLOCKING` (line 155). |
+| `send_image()` (line 225) | **Gotcha:** camera frames go in `video=`; the documented `media=` is rejected by 3.8. |
+| `direct()` (line 240) | Mid-session steering. `role="system"` content is ignored on 3.8, but a realtime "stage direction" works. |
 | `say_and_wait()` | Send text and await the avatar's full spoken reply. This is what makes the debate easy. |
-| `_receive_loop()` (line ~236) | **Gotcha:** `session.receive()` ends at every turn, hence `while True:` (line ~252). |
+| `_receive_loop()` (line 257) | **Gotcha:** `session.receive()` ends at every turn, hence `while True:` (line 273). |
 | `_handle()` | Turns raw messages into 7 simple events: video, transcript, turn_complete, interrupted, tool_call, go_away, error. |
-| `_dispatch_tool()` | Fast tools are awaited inline. Slow tools run in `asyncio.create_task` (line ~329) so the stream never freezes, and duplicate calls are ignored while one is pending. |
+| `_dispatch_tool()` | Fast tools are awaited inline. Slow tools run in `asyncio.create_task` (line 350) so the stream never freezes, and duplicate calls are ignored while one is pending. |
 | `_respond()` | Echoes `id=fc.id` and passes `scheduling` (WHEN_IDLE / SILENT / INTERRUPT). |
 
 The `Tool` dataclass is the extension point: a declaration dict, an async handler, and `background` + `scheduling`.
 
 ### 5. `app/browser_link.py`
 
-The browser ⇄ server protocol in one docstring. One rule: **binary = media, text = JSON.** Server → browser binary frames are `[1 byte stream index][fMP4 chunk]` (line ~59). The index is what lets the debate page run two videos over one socket. `forward_events()` adapts `AvatarSession` events into messages for the page.
+The browser ⇄ server protocol in one docstring. One rule: **binary = media, text = JSON.** Server → browser binary frames are `[1 byte stream index][fMP4 chunk]` (line 62). The index is what lets the debate page run two videos over one socket. `forward_events()` adapts `AvatarSession` events into messages for the page.
 
 ### 6. `app/demos/base.py` and `app/server.py`
 
-- `Demo.run()` (base.py line 59) is the standard loop: open a session, optionally greet, then `pump_browser()` forwards mic PCM, camera JPEGs and text into the session.
-- `server.py` has one WebSocket route, `/ws/{demo_id}` (line 61). The first message carries the demo's options. `_friendly()` turns common setup errors (blocked key, quota, allowlist) into advice.
+- `Demo.run()` (base.py line 62) is the standard loop: open a session, optionally greet, then `pump_browser()` forwards mic PCM, camera JPEGs and text into the session.
+- `server.py` has one WebSocket route, `/ws/{demo_id}` (line 64). The first message carries the demo's options. `_friendly()` turns common setup errors (blocked key, quota, allowlist) into advice.
 
 ---
 
@@ -62,10 +62,10 @@ The browser ⇄ server protocol in one docstring. One rule: **binary = media, te
 
 ### 7. `app/static/js/avatar-player.js`: playing the stream
 
-- `MIME` (line 20): `video/mp4; codecs="avc1.42c020, mp4a.40.2"` (H.264 Constrained Baseline 3.2 + AAC-LC).
+- `MIME` (line 22): `video/mp4; codecs="avc1.42c020, mp4a.40.2"` (H.264 Constrained Baseline 3.2 + AAC-LC).
 - `start()` creates a `MediaSource` (or `ManagedMediaSource` on iOS) and calls `video.play()` while we still have the click gesture, so audio autoplays.
 - `_pump()` batches chunks into one `appendBuffer`.
-- `_chase()` (line 111) is the live-player part: speed up to 1.08× if we're >0.6 s behind, jump if >2 s, and trim old buffer so it never fills.
+- `_chase()` (line 113) is the live-player part: speed up to 1.08× if we're >0.6 s behind, jump if >2 s, and trim old buffer so it never fills.
 - `jumpToLive()` is called on `interrupted`, so barge-in feels instant.
 
 ### 8. `pcm-worklet.js` + `media.js`
@@ -74,7 +74,7 @@ Mic → AudioWorklet → resample to **16 kHz 16-bit mono PCM** in 100 ms chunks
 
 ### 9. `live-client.js`
 
-Routes binary chunks by stream byte (line 39) and re-emits JSON as DOM events. The **echo gate** (`gated`, line 60) mutes the mic while the avatar is speaking, unless headphones mode is on. Without it, laptop speakers make the avatar interrupt itself.
+Routes binary chunks by stream byte (line 41) and re-emits JSON as DOM events. The **echo gate** (`gated`, line 62) mutes the mic while the avatar is speaking, unless headphones mode is on. Without it, laptop speakers make the avatar interrupt itself.
 
 ### 10. `shell.js`
 
@@ -89,22 +89,22 @@ The simplest demo. `session_kwargs()` passes the chosen avatar/voice/search thro
 
 ### 12. The Appraiser: `demos/appraiser.py`
 - Camera vision: the professor describes real details of what you hold up.
-- `consult_auction_archives` is `background=True, scheduling="WHEN_IDLE"` (line ~117). It sleeps 6 s, the professor keeps talking, and he brings up the results at the next pause. **This is the best on-stage demo of async function calling.**
+- `consult_auction_archives` is `background=True, scheduling="WHEN_IDLE"` (line 120). It sleeps 6 s, the professor keeps talking, and he brings up the results at the next pause. **This is the best on-stage demo of async function calling.**
 - `issue_certificate` → `ctx.ui("certificate", ...)` → rendered by `js/demos/appraiser.js`.
 
 ### 13. The Interrogation Room: `demos/interrogation.py`
 - The secret truth lives in the system instruction; the clue texts live in Python (`CLUES`) so the UI and server agree on them.
 - `update_composure` is a `SILENT` background tool: purely cosmetic, and it never interrupts the performance.
-- **`confess()` (line 111) is the key idea:** the model plays the character, but Python enforces the rules. With fewer than 3 clues (line 114) the tool refuses and tells the model to keep denying. Try accusing her in your first question.
+- **`confess()` (line 114) is the key idea:** the model plays the character, but Python enforces the rules. With fewer than 3 clues (line 117) the tool refuses and tells the model to keep denying. Try accusing her in your first question.
 
 ### 14. The Polyglot Café: `demos/polyglot.py`
 - `add_vocab` / `correct_me` are `SILENT` background tools, so cards appear without the barista talking about them.
-- `on_action()` (line ~170): the city buttons call `session.direct(...)` to teleport the café **in the same session**. The conversation history survives, and the language switches instantly.
+- `on_action()` (line 173): the city buttons call `session.direct(...)` to teleport the café **in the same session**. The conversation history survives, and the language switches instantly.
 - Uses the docs' tip for non-English output: `RESPOND IN X. YOU MUST RESPOND UNMISTAKABLY IN X.`
 
 ### 15. Avatar Debate Club: `demos/debate.py`
-- Two `AvatarSession`s, each forwarding to a different stream index (lines 71/76).
-- `_debate()` is plain asyncio: `said = await me.say_and_wait(prompt)` (line ~105), then the next speaker gets `Your opponent just said: "{said}"`. The output transcription is the glue between the two agents.
+- Two `AvatarSession`s, each forwarding to a different stream index (lines 74/79).
+- `_debate()` is plain asyncio: `said = await me.say_and_wait(prompt)` (line 108), then the next speaker gets `Your opponent just said: "{said}"`. The output transcription is the glue between the two agents.
 - Moderator interjections queue up and are prepended to the next speaker's prompt; the verdict triggers a loser-then-winner reaction.
 
 ### 16. Be the Avatar: `demos/custom_avatar.py` + `js/demos/custom.js`

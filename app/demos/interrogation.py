@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 Demo 3: The Interrogation Room, a murder-mystery-style game with a live suspect.
 

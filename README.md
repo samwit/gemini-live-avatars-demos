@@ -131,3 +131,12 @@ scripts/             01 hello, 02 raw websocket, 03 script-to-video
 There's also a **🧭 How it works** page in the app (`/how-it-works.html`) with an animated architecture diagram, a step-by-step sequence diagram of one turn, and a map of the code.
 
 All generated audio and video carry Google's SynthID watermark. The avatars are fictional prebuilt characters, and the appraisals, auction records and crimes are made up for fun.
+
+## License
+
+Code in this repository is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
+
+- It builds on Google's Gemini Live API documentation and the [GoogleCloudPlatform/generative-ai](https://github.com/GoogleCloudPlatform/generative-ai) samples (also Apache 2.0). Thanks to the Google teams who published them.
+- The **avatar images** (`app/static/img/avatars/`, `docs/img/`) are frames of Google's prebuilt Live Avatar characters. They're included to illustrate the demos and aren't covered by this project's license.
+- Running the demos uses Google Cloud under your own account and Google's terms, including the [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy).
+- Gemini and Google are trademarks of Google LLC. This is an independent project, not affiliated with or endorsed by Google.

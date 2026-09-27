@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 // The Note Taker: renders each note-taking-tool call as a handwritten block on a notepad.
 import { h, mountDemo } from "../shell.js";
 

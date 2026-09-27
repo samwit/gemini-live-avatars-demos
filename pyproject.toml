@@ -3,6 +3,9 @@ name = "gemini-live-avatars"
 version = "0.1.0"
 description = "Demos for Gemini 3.8 Live with Live Avatar on Gemini Enterprise Agent Platform"
 readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Sam Witteveen" }]
 requires-python = ">=3.10"
 dependencies = [
     "google-genai>=2.25.0",

@@ -1,3 +1,5 @@
+// Copyright 2026 Sam Witteveen
+// SPDX-License-Identifier: Apache-2.0
 /**
  * AudioWorklet that turns microphone audio into what the Live API wants:
  * 16 kHz, 16-bit, little-endian, mono PCM.

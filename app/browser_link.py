@@ -1,3 +1,6 @@
+# Copyright 2026 Sam Witteveen
+# SPDX-License-Identifier: Apache-2.0
+
 """
 BrowserLink: the server side of the WebSocket between our page and our backend.
 
