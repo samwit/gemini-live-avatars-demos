@@ -1,16 +1,16 @@
 """
 Demo 3: The Interrogation Room, a murder-mystery-style game with a live suspect.
 
-You're the detective. Desmond Price (the "Paul" avatar), head of security at
+You're the detective. Diana Price (the "Vera" avatar), head of security at
 the Hartwell Museum, is your only suspect in the theft of the Midnight
-Sapphire. He's polite, calm and lying. Question him (voice or text), catch his
-contradictions, and watch the evidence board and his composure meter update
+Sapphire. She's polite, calm and lying. Question her (voice or text), catch her
+contradictions, and watch the evidence board and her composure meter update
 live.
 
 What it shows:
   * a character with a hidden truth held in the system instruction
   * tools as game mechanics: the model decides when a clue slips out
-    (`reveal_clue`) and how rattled he is (`update_composure`)
+    (`reveal_clue`) and how rattled she is (`update_composure`)
   * the SERVER as referee: `confess` is guarded by Python. If fewer than 3
     clues are on the board the tool refuses, and the model has to keep
     denying. The LLM plays the role, and your code enforces the rules.
@@ -24,35 +24,35 @@ from .base import Demo
 CLUES = {
     "generator_log": {
         "title": "Generator Log",
-        "text": "The backup generator was switched OFF manually at 21:46, one minute before the blackout, using security code #0417. That's Desmond's personal code.",
+        "text": "The backup generator was switched OFF manually at 21:46, one minute before the blackout, using security code #0417. That's Diana's personal code.",
         "unlock_hint": "the detective asks about the power cut, the generator, or the control room systems",
     },
     "wet_shoes": {
         "title": "Wet Shoes",
-        "text": "A junior guard saw Desmond walk into the (dry, indoor) control room at 21:52 with rain-soaked shoes. The gallery skylight was open for repairs that night.",
-        "unlock_hint": "the detective asks exactly where he was, whether anyone saw him, or about the weather or the skylight",
+        "text": "A junior guard saw Diana walk into the (dry, indoor) control room at 21:52 with rain-soaked shoes. The gallery skylight was open for repairs that night.",
+        "unlock_hint": "the detective asks exactly where she was, whether anyone saw her, or about the weather or the skylight",
     },
     "replica_invoice": {
         "title": "Replica Invoice",
         "text": "An invoice from 'Vasquez Fine Replicas' for a 'deep blue oval gemstone, 41 carats, display-grade copy', billed to D. Price, dated three weeks ago.",
-        "unlock_hint": "the detective asks about jewelers, his finances, hobbies, or whether the stone in the case now is real",
+        "unlock_hint": "the detective asks about jewelers, her finances, hobbies, or whether the stone in the case now is real",
     },
     "pension_letter": {
         "title": "Pension Letter",
-        "text": "A letter from the museum board: Desmond's position will be replaced by an automated AI security contractor next month and his pension has been 'restructured' to a fraction of what was promised.",
-        "unlock_hint": "the detective asks about his retirement, his future, the board, or how he feels about the museum",
+        "text": "A letter from the museum board: Diana's position will be replaced by an automated AI security contractor next month and her pension has been 'restructured' to a fraction of what was promised.",
+        "unlock_hint": "the detective asks about her retirement, her future, the board, or how she feels about the museum",
     },
 }
 
 CASE_FILE = {
     "case": "The Midnight Sapphire",
     "summary": "At the Hartwell Museum charity gala, the 41-carat Midnight Sapphire vanished from its case during a 90-second power cut at 21:47. A near-perfect replica was left in its place.",
-    "suspect": "Desmond Price, 64. Head of Security for 22 years. Retiring next month.",
-    "alibi": "Claims he was in the security control room the whole time, trying to restart the backup generator.",
+    "suspect": "Diana Price, 64. Head of Security for 22 years. Retiring next month.",
+    "alibi": "Claims she was in the security control room the whole time, trying to restart the backup generator.",
 }
 
 SYSTEM = f"""\
-You are DESMOND PRICE, 64, head of security at the Hartwell Museum for 22 years. You are
+You are DIANA PRICE, 64, head of security at the Hartwell Museum for 22 years. You are
 being interrogated by a detective, the user, about the theft of the Midnight Sapphire.
 You are a live video avatar: speak in short, natural, spoken sentences. Polite, dry,
 old-school British reserve, and occasionally a little wounded that anyone would suspect you.
@@ -73,8 +73,8 @@ these topics, let the detail slip (awkwardly, or while trying to explain it away
 """ + "\n".join(f"- {cid}: {c['text']} (unlocks when {c['unlock_hint']})" for cid, c in CLUES.items()) + """
 
 COMPOSURE: after every answer where pressure changes, call `update_composure` with a level
-from 100 (perfectly calm) to 0 (falling apart) and a short physical "tell" (e.g. "adjusts his
-tie", "long pause", "laughs a bit too loudly"). Start at 90.
+from 100 (perfectly calm) to 0 (falling apart) and a short physical "tell" (e.g. "adjusts her
+collar", "long pause", "laughs a bit too loudly"). Start at 90.
 
 CONFESSION: only if the detective directly accuses you AND at least three clues are on the
 board, call `confess`. If the tool refuses, you must keep denying, indignantly.
@@ -171,10 +171,10 @@ class Interrogation(Demo):
     id = "interrogation"
     title = "The Interrogation Room"
     emoji = "🕵️"
-    tagline = "Crack a lying suspect. Clues and his composure update live; the server decides if he may confess."
+    tagline = "Crack a lying suspect. Clues and her composure update live; the server decides if she may confess."
     features = ["Hidden-truth character", "Tools as game mechanics", "Server-side rules"]
-    avatar = "Paul"
-    voice = "Algenib"
+    avatar = "Vera"
+    voice = "Gacrux"
 
     def system_instruction(self, options):
         return SYSTEM

@@ -23,7 +23,7 @@ mountDemo({
           h("dt", {}, "Case"), h("dd", {}, data.case),
           h("dt", {}, "What happened"), h("dd", {}, data.summary),
           h("dt", {}, "Suspect"), h("dd", {}, data.suspect),
-          h("dt", {}, "His alibi"), h("dd", {}, data.alibi),
+          h("dt", {}, "Alibi"), h("dd", {}, data.alibi),
         );
         break;
 
@@ -38,7 +38,7 @@ mountDemo({
         break;
       }
 
-      // update_composure: the meter and a log of his nervous tells
+      // update_composure: the meter and a log of her nervous tells
       case "composure":
         $("composure").style.width = `${data.level}%`;
         if (data.tell) $("tells").prepend(h("li", {}, `${data.tell} (${data.level})`));

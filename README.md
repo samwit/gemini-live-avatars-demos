@@ -12,7 +12,7 @@ Everything here was built and tested against the live API (`gemini-3.8-live`, `g
 |---|---|---|
 | 🎛️ **Avatar Studio** | Pick any of 11 faces, 30 voices and a persona, then talk | The basic config, face/voice mixing, Google Search grounding |
 | 🔍 **The Appraiser** | Hold *anything* up to your webcam; a pompous professor invents its history and issues a certificate | Live camera vision, tools that drive UI, **async tools** (`NON_BLOCKING` + `WHEN_IDLE`) |
-| 🕵️ **The Interrogation Room** | Question a lying museum security chief about a stolen sapphire | A character with a hidden truth, tools as game mechanics, **server-side rules** (he *can't* confess until you've found 3 clues) |
+| 🕵️ **The Interrogation Room** | Question a lying museum security chief about a stolen sapphire | A character with a hidden truth, tools as game mechanics, **server-side rules** (she *can't* confess until you've found 3 clues) |
 | ☕ **The Polyglot Café** | Order coffee in Paris, then teleport the café to Tokyo mid-sentence | 97 languages, **steering a live session** without reconnecting, `SILENT` async tools |
 | ⚖️ **Avatar Debate Club** | Give two avatars a ridiculous motion and moderate | **Two Live sessions at once**, agent-to-agent relay via transcripts |
 

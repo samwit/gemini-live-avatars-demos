@@ -95,7 +95,7 @@ The simplest demo. `session_kwargs()` passes the chosen avatar/voice/search thro
 ### 13. The Interrogation Room: `demos/interrogation.py`
 - The secret truth lives in the system instruction; the clue texts live in Python (`CLUES`) so the UI and server agree on them.
 - `update_composure` is a `SILENT` background tool: purely cosmetic, and it never interrupts the performance.
-- **`confess()` (line 111) is the key idea:** the model plays the character, but Python enforces the rules. With fewer than 3 clues (line 114) the tool refuses and tells the model to keep denying. Try accusing him in your first question.
+- **`confess()` (line 111) is the key idea:** the model plays the character, but Python enforces the rules. With fewer than 3 clues (line 114) the tool refuses and tells the model to keep denying. Try accusing her in your first question.
 
 ### 14. The Polyglot Café: `demos/polyglot.py`
 - `add_vocab` / `correct_me` are `SILENT` background tools, so cards appear without the barista talking about them.
