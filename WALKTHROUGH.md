@@ -114,6 +114,16 @@ The simplest demo. `session_kwargs()` passes the chosen avatar/voice/search thro
 - `AvatarSession._avatar_config()` swaps `avatar_name` for `customized_avatar=CustomizedAvatar(image_data=<bytes>, image_mime_type="image/png")`, and the SDK base64-encodes it.
 - The photo stays in memory for the session only.
 
+### 17. The Note Taker: `demos/notetaker.py` + `js/demos/notetaker.js`
+- The function really is called `note-taking-tool`. Gemini accepts dashes in function names.
+- It's `background=True, scheduling="SILENT"`, so the notes appear while she keeps talking and she never reads them out. The system prompt insists every reply has a spoken part too; without that, the model sometimes only calls the tool.
+- Structured arguments (`title`, `points`, `action_items`, `key_phrase`) are what make the notepad look good. The page renders them in the Caveat/Kalam handwriting fonts with a line-by-line "pen" reveal, a highlighter on the key phrase, and tickable to-dos.
+- "✨ Tidy up my notes" is `on_action` → `session.direct(...)`, the same steering trick as the Polyglot café.
+- Copy / download builds Markdown from the blocks in the browser.
+
+### The "How it works" page: `static/how-it-works.html`
+A hand-drawn SVG architecture diagram (animated arrows), a Mermaid sequence diagram of one Note Taker turn, the stream format, the three kinds of tools, the protocol, and a code map. Handy as a slide while presenting.
+
 ---
 
 ## Adding your own demo

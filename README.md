@@ -15,6 +15,7 @@ Everything here was built and tested against the live API (`gemini-3.8-live`, `g
 | 🕵️ **The Interrogation Room** | Question a lying museum security chief about a stolen sapphire | A character with a hidden truth, tools as game mechanics, **server-side rules** (she *can't* confess until you've found 3 clues) |
 | ☕ **The Polyglot Café** | Order coffee in Paris, then teleport the café to Tokyo mid-sentence | 97 languages, **steering a live session** without reconnecting, `SILENT` async tools |
 | ⚖️ **Avatar Debate Club** | Give two avatars a ridiculous motion and moderate | **Two Live sessions at once**, agent-to-agent relay via transcripts |
+| 📝 **The Note Taker** | Think out loud; she chats back while writing summarized notes by hand | A custom function literally named `note-taking-tool`, `SILENT` async tools, a live artifact you can export as Markdown |
 | 📸 **Be the Avatar** | Upload a portrait, frame it, and talk to it as a live avatar | `customized_avatar` from one photo, input validation, consent. **Needs an allowlisted project.** |
 
 | | |
@@ -126,5 +127,7 @@ scripts/             01 hello, 02 raw websocket, 03 script-to-video
 - [Live API docs](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api) · [Configure live avatars](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/live-api/configure-live-avatars)
 - [Launch blog post](https://cloud.google.com/blog/products/ai-machine-learning/gemini-3-8-live-with-live-avatar-is-now-generally-available)
 - Google's samples: [intro_live_avatar.ipynb](https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/multimodal-live-api/intro_live_avatar.ipynb), [shopping-avatar](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/multimodal-live-api/shopping-avatar)
+
+There's also a **🧭 How it works** page in the app (`/how-it-works.html`) with an animated architecture diagram, a step-by-step sequence diagram of one turn, and a map of the code.
 
 All generated audio and video carry Google's SynthID watermark. The avatars are fictional prebuilt characters, and the appraisals, auction records and crimes are made up for fun.

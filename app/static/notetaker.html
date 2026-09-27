@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Note Taker · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Handwriting fonts for the notepad (Google Fonts, OFL licensed) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>📝 The Note Taker</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · Ingrid · Kore · note-taking-tool</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay"><img src="/img/avatars/ingrid.jpg" alt=""><span>Press Start and think out loud</span></div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+        <div class="name-tag">Ingrid · Note taker</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary">Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn" title="Show her a whiteboard or a page">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting mid-sentence (use headphones)"><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="Or type your thoughts…" autocomplete="off">
+        <button class="btn">Send</button>
+      </form>
+    </section>
+
+    <section class="col side">
+      <div class="panel notes-toolbar">
+        <label class="field" style="flex:0 0 220px">Mode
+          <select id="mode">
+            <option value="brainstorm">💡 Brainstorm partner</option>
+            <option value="study">📚 Study buddy</option>
+            <option value="meeting">🗓️ Meeting scribe</option>
+          </select>
+        </label>
+        <span class="spacer" style="flex:1"></span>
+        <button class="btn small" id="tidyBtn" title="Ask for a clean summary block">✨ Tidy up my notes</button>
+        <button class="btn small" id="copyBtn">📋 Copy</button>
+        <button class="btn small" id="downloadBtn">⬇️ .md</button>
+        <button class="btn small" id="clearBtn">🗑️</button>
+      </div>
+
+      <!-- The notepad: every note-taking-tool call adds a block here -->
+      <div class="notepad" id="notepad">
+        <div class="notepad-date" id="notepadDate"></div>
+        <div id="notes"><p class="notepad-empty">Your notes will appear here as you talk…</p></div>
+      </div>
+
+      <details class="panel" style="flex:0 0 auto">
+        <summary><h2 style="display:inline">Transcript</h2></summary>
+        <div id="transcript" class="transcript" style="max-height:200px;margin-top:8px"></div>
+      </details>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/notetaker.js"></script>
+</body>
+</html>

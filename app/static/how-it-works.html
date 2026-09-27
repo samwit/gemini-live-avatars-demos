@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How it works · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="doc-page">
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>🧭 How it works</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · Live Avatar</span>
+  </header>
+
+  <article class="doc">
+    <section class="doc-hero">
+      <h2>From your voice to a talking face, and back, in about a second.</h2>
+      <p>Every demo in this app is the same three-part system: a <b>browser</b> that captures you and plays the avatar,
+        a small <b>Python server</b> that holds the credentials and runs the tools, and <b>Gemini 3.8 Live</b>, which listens,
+        thinks, calls tools and renders the avatar's video.</p>
+    </section>
+
+    <!-- 1. Architecture diagram ------------------------------------------------------ -->
+    <section>
+      <h3 class="doc-h">1 · The big picture</h3>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1200 520" class="arch" role="img" aria-label="Architecture diagram">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7aa2ff"/>
+            </marker>
+            <marker id="arrowPink" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#b48cff"/>
+            </marker>
+            <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#3ddc97"/>
+            </marker>
+          </defs>
+
+          <!-- Column backgrounds -->
+          <rect x="20" y="20" width="320" height="480" rx="18" class="col-bg"/>
+          <rect x="440" y="20" width="320" height="480" rx="18" class="col-bg"/>
+          <rect x="860" y="20" width="320" height="480" rx="18" class="col-bg google"/>
+          <text x="180" y="56" class="col-title">🌐 Browser</text>
+          <text x="180" y="76" class="col-sub">vanilla JS · no build step</text>
+          <text x="600" y="56" class="col-title">🐍 Python server</text>
+          <text x="600" y="76" class="col-sub">FastAPI · google-genai SDK</text>
+          <text x="1020" y="56" class="col-title">☁️ Gemini on Agent Platform</text>
+          <text x="1020" y="76" class="col-sub">us-central1 / EU endpoints</text>
+
+          <!-- Browser boxes -->
+          <g class="box"><rect x="40" y="96" width="280" height="56" rx="12"/><text x="56" y="120" class="bt">🎙️ Mic → AudioWorklet</text><text x="56" y="140" class="bs">16 kHz 16-bit PCM · pcm-worklet.js</text></g>
+          <g class="box"><rect x="40" y="166" width="280" height="56" rx="12"/><text x="56" y="190" class="bt">📷 Camera → canvas</text><text x="56" y="210" class="bs">JPEG, 1 frame / second · media.js</text></g>
+          <g class="box"><rect x="40" y="236" width="280" height="56" rx="12"/><text x="56" y="260" class="bt">⌨️ Text box &amp; buttons</text><text x="56" y="280" class="bs">JSON messages · shell.js</text></g>
+          <g class="box hl"><rect x="40" y="326" width="280" height="56" rx="12"/><text x="56" y="350" class="bt">▶️ &lt;video&gt; + MediaSource</text><text x="56" y="370" class="bs">fMP4 stream · avatar-player.js</text></g>
+          <g class="box"><rect x="40" y="396" width="280" height="56" rx="12"/><text x="56" y="420" class="bt">🧩 Demo widgets</text><text x="56" y="440" class="bs">notes, cards · js/demos/*</text></g>
+
+          <!-- Server boxes -->
+          <g class="box"><rect x="460" y="96" width="280" height="56" rx="12"/><text x="476" y="120" class="bt">🔌 BrowserLink</text><text x="476" y="140" class="bs">/ws/{demo} · browser_link.py</text></g>
+          <g class="box hl"><rect x="460" y="196" width="280" height="76" rx="12"/><text x="476" y="222" class="bt">🧠 AvatarSession</text><text x="476" y="242" class="bs">config · receive loop · tool dispatch</text><text x="476" y="260" class="bs">live_session.py</text></g>
+          <g class="box"><rect x="460" y="326" width="280" height="56" rx="12"/><text x="476" y="350" class="bt">🛠️ Tool handlers</text><text x="476" y="370" class="bs">plain Python · demos/*.py</text></g>
+          <g class="box key"><rect x="460" y="420" width="280" height="56" rx="12"/><text x="476" y="444" class="bt">🔑 Credentials (server only)</text><text x="476" y="464" class="bs">API key / ADC · config.py</text></g>
+
+          <!-- Google boxes -->
+          <g class="box"><rect x="880" y="96" width="280" height="56" rx="12"/><text x="896" y="120" class="bt">🔎 Google Search</text><text x="896" y="140" class="bs">optional grounding (Studio)</text></g>
+          <g class="box"><rect x="880" y="186" width="280" height="56" rx="12"/><text x="896" y="210" class="bt">gemini-3.8-live</text><text x="896" y="230" class="bs">speech ⇄ speech · vision · tools</text></g>
+          <g class="box hl"><rect x="880" y="270" width="280" height="76" rx="12"/><text x="896" y="296" class="bt">🎭 Live Avatar</text><text x="896" y="316" class="bs">lip-synced H.264 704×1280 24fps</text><text x="896" y="334" class="bs">+ AAC voice, as fragmented MP4</text></g>
+          <text x="1020" y="440" class="col-sub">SynthID watermark on all audio + video</text>
+          <text x="1020" y="460" class="col-sub">~10 min per connection · resumable</text>
+
+          <!-- Flows: browser → server -->
+          <path d="M320 124 C 390 124, 390 116, 460 116" class="flow" marker-end="url(#arrow)"/>
+          <path d="M320 194 C 400 194, 400 124, 460 124" class="flow" marker-end="url(#arrow)"/>
+          <path d="M320 264 C 410 264, 410 132, 460 132" class="flow" marker-end="url(#arrow)"/>
+          <text x="390" y="100" class="lbl">PCM · JPEG · JSON</text>
+
+          <!-- BrowserLink ⇄ AvatarSession -->
+          <path d="M585 152 L585 194" class="flow" marker-end="url(#arrow)"/>
+          <path d="M615 194 L615 154" class="flow back" marker-end="url(#arrowGreen)"/>
+
+          <!-- AvatarSession ⇄ Gemini -->
+          <path d="M740 214 L878 214" class="flow" marker-end="url(#arrow)"/>
+          <text x="810" y="204" class="lbl">realtime_input</text>
+          <path d="M880 304 C 810 304, 810 256, 742 256" class="flow back" marker-end="url(#arrowGreen)"/>
+          <text x="810" y="326" class="lbl green">fMP4 · transcripts</text>
+          <text x="810" y="342" class="lbl green">tool_call</text>
+          <path d="M1020 152 L1020 184" class="flow thin dashed" marker-end="url(#arrow)"/>
+          <path d="M1020 242 L1020 268" class="flow thin" marker-end="url(#arrow)"/>
+
+          <!-- AvatarSession ⇄ tools -->
+          <path d="M585 272 L585 324" class="flow pink" marker-end="url(#arrowPink)"/>
+          <path d="M615 326 L615 274" class="flow pink" marker-end="url(#arrowPink)"/>
+          <text x="578" y="302" class="lbl pink" style="text-anchor:end">tool_call</text>
+          <text x="622" y="302" class="lbl pink" style="text-anchor:start">tool_response</text>
+
+          <!-- Back to the browser: video + UI events -->
+          <path d="M460 252 C 390 252, 390 354, 322 354" class="flow back" marker-end="url(#arrowGreen)"/>
+          <text x="390" y="296" class="lbl green">fMP4 →</text>
+          <path d="M460 360 C 390 360, 390 424, 322 424" class="flow pink" marker-end="url(#arrowPink)"/>
+          <text x="390" y="410" class="lbl pink">ui events (JSON)</text>
+
+          <!-- Credentials -->
+          <path d="M700 420 L700 274" class="flow thin dashed" marker-end="url(#arrow)"/>
+          <text x="708" y="400" class="lbl" style="text-anchor:start">auth</text>
+        </svg>
+        <div class="legend">
+          <span><i class="sw blue"></i>your input going up</span>
+          <span><i class="sw green"></i>the avatar coming back</span>
+          <span><i class="sw pink"></i>tool calls &amp; UI updates</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Sequence diagram ------------------------------------------------------------- -->
+    <section>
+      <h3 class="doc-h">2 · One turn, step by step (The Note Taker)</h3>
+      <p>You say something. Gemini answers out loud and, <i>at the same time</i>, calls
+        <code>note-taking-tool</code> in the background. The avatar never pauses while the notes are being written.</p>
+      <div class="diagram-wrap mermaid-wrap">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor You
+  participant B as Browser
+  participant S as Python server
+  participant G as Gemini 3.8 Live
+  You->>B: 🎙️ "Mum's party is Saturday, 20 people, garden theme…"
+  B->>S: 16 kHz PCM (binary WebSocket frames)
+  S->>G: send_realtime_input(audio)
+  G-->>S: input_transcription (what you said)
+  G-->>S: tool_call: note-taking-tool {title, points, action_items}
+  par The avatar keeps talking
+    G-->>S: fMP4 video chunks + output_transcription
+    S-->>B: [0] + fMP4 → MediaSource buffer
+    B-->>You: 🎭 lip-synced reply "Lovely! Who's baking the cake?"
+  and The tool runs in the background (NON_BLOCKING)
+    S->>S: note_taking_tool(args) in Python
+    S-->>B: {"type":"ui","event":"note",…}
+    B-->>You: 📝 handwritten notes appear
+    S->>G: tool_response (scheduling = SILENT)
+  end
+  G-->>S: turn_complete
+  Note over G,B: Between turns the video keeps streaming: the avatar idles, blinks and listens.
+</pre>
+      </div>
+    </section>
+
+    <!-- 3. The stream --------------------------------------------------------------------- -->
+    <section>
+      <h3 class="doc-h">3 · What's actually in the avatar stream</h3>
+      <p>Turning on <code>response_modalities=["VIDEO"]</code> makes the model send <b>one continuous fragmented-MP4 file</b>,
+        in ~16 KB pieces, from the moment you connect. The voice is already inside it, so lip sync is free:
+        the browser just appends every piece to a <code>MediaSource</code>.</p>
+      <div class="stream-strip">
+        <div class="seg init">ftyp + moov<small>init segment · once</small></div>
+        <div class="seg idle">moof|mdat<small>idle</small></div>
+        <div class="seg idle">moof|mdat<small>idle</small></div>
+        <div class="seg talk">moof|mdat<small>speaking</small></div>
+        <div class="seg talk">moof|mdat<small>speaking</small></div>
+        <div class="seg talk">moof|mdat<small>speaking</small></div>
+        <div class="seg idle">moof|mdat<small>listening</small></div>
+        <div class="seg more">… forever</div>
+      </div>
+      <div class="facts">
+        <div><b>Video</b>H.264 Constrained Baseline, 704×1280, 24 fps</div>
+        <div><b>Audio</b>AAC-LC 24 kHz mono, muxed in</div>
+        <div><b>MSE codec string</b><code>avc1.42c020, mp4a.40.2</code></div>
+        <div><b>Bitrate</b>~5 Mbps default, 1.5 Mbps here via <code>video_bitrate_bps</code></div>
+      </div>
+    </section>
+
+    <!-- 4. Tools ----------------------------------------------------------------------------- -->
+    <section>
+      <h3 class="doc-h">4 · Three kinds of tools</h3>
+      <div class="tool-kinds">
+        <div class="panel">
+          <h4>⏸️ Blocking</h4>
+          <p>The model waits for your answer. Use it for quick lookups and anything the reply depends on.</p>
+          <p class="eg">Appraiser: <code>issue_certificate</code> · Interrogation: <code>confess</code> (Python refuses unless 3 clues are found)</p>
+        </div>
+        <div class="panel">
+          <h4>⏳ Async · WHEN_IDLE</h4>
+          <p><code>behavior: NON_BLOCKING</code>. The avatar keeps talking; the result is brought up at the next natural pause.</p>
+          <p class="eg">Appraiser: <code>consult_auction_archives</code> (takes 6 s)</p>
+        </div>
+        <div class="panel">
+          <h4>🤫 Async · SILENT</h4>
+          <p>Fire and forget. The result goes into context but isn't spoken about. Perfect for UI side effects.</p>
+          <p class="eg">Note Taker: <code>note-taking-tool</code> · Polyglot: <code>add_vocab</code> · Interrogation: <code>update_composure</code></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Protocol + code map ---------------------------------------------------------------- -->
+    <section class="two-col">
+      <div>
+        <h3 class="doc-h">5 · Browser ⇄ server protocol</h3>
+        <p>One rule: <b>binary frames are media, text frames are JSON.</b></p>
+        <table class="proto">
+          <tr><th>Direction</th><th>Message</th></tr>
+          <tr><td>→ server</td><td>binary: mic PCM 16 kHz</td></tr>
+          <tr><td>→ server</td><td><code>{"type":"start","options":{…}}</code></td></tr>
+          <tr><td>→ server</td><td><code>{"type":"image","data":b64}</code> · <code>{"type":"text"}</code> · <code>{"type":"action"}</code></td></tr>
+          <tr><td>← browser</td><td>binary: <code>[stream byte][fMP4 chunk]</code></td></tr>
+          <tr><td>← browser</td><td><code>transcript</code> · <code>turn_complete</code> · <code>interrupted</code> · <code>tool</code> · <code>ui</code> · <code>error</code></td></tr>
+        </table>
+        <p class="note" style="text-align:left">The stream byte lets one socket carry two avatars (the Debate demo).</p>
+      </div>
+      <div>
+        <h3 class="doc-h">6 · Where it lives in the code</h3>
+        <ul class="codemap">
+          <li><code>app/config.py</code> auth: API key or ADC</li>
+          <li><code>app/live_session.py</code> <b>the core</b>: setup config, receive loop, tools</li>
+          <li><code>app/browser_link.py</code> the protocol above</li>
+          <li><code>app/demos/*.py</code> one file per demo: persona + tools</li>
+          <li><code>static/js/avatar-player.js</code> <b>the browser core</b>: MSE + live-edge chasing</li>
+          <li><code>static/js/pcm-worklet.js</code> mic → 16 kHz PCM</li>
+          <li><code>static/js/live-client.js</code> socket + echo gate</li>
+          <li><code>scripts/01…03</code> the same API from the terminal</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-cta">
+      <a class="btn primary" href="/notetaker.html">Try the Note Taker →</a>
+      <a class="btn" href="/">All demos</a>
+    </section>
+  </article>
+
+  <script type="module">
+    // Render the sequence diagram with Mermaid (loaded from a CDN).
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "dark",
+      themeVariables: {
+        background: "#141821", primaryColor: "#1b2030", primaryBorderColor: "#7aa2ff",
+        primaryTextColor: "#e8ebf2", lineColor: "#7aa2ff", actorBkg: "#1b2030", actorBorder: "#7aa2ff",
+        noteBkgColor: "#2a2140", noteTextColor: "#e8ebf2", noteBorderColor: "#b48cff",
+        fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif", fontSize: "15px",
+      },
+      sequence: { mirrorActors: false, actorMargin: 70, messageMargin: 34 },
+    });
+  </script>
+</body>
+</html>
