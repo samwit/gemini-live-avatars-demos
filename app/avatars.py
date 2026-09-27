@@ -14,7 +14,8 @@ AVATARS = {
     # Photoreal
     "Jay":    {"style": "photoreal", "look": "Young man in a sharp grey suit",           "voice": "Puck"},
     "Paul":   {"style": "photoreal", "look": "Distinguished older man, suit and tie",    "voice": "Algenib"},
-    "Sam":    {"style": "photoreal", "look": "Bearded academic, glasses, tweed jacket",  "voice": "Sadaltager"},
+    # Google calls this avatar "Sam"; this app shows it as "David" (see api_name below).
+    "David":  {"style": "photoreal", "look": "Bearded academic, glasses, tweed jacket",  "voice": "Sadaltager", "api_name": "Sam"},
     "Ingrid": {"style": "photoreal", "look": "Blonde woman in a navy blazer and tie",    "voice": "Kore"},
     "Kira":   {"style": "photoreal", "look": "Curly-haired woman in a denim jacket",     "voice": "Aoede"},
     "Vera":   {"style": "photoreal", "look": "Silver-haired woman, music-note jacket",   "voice": "Gacrux"},
@@ -39,3 +40,12 @@ VOICES = {
     "Rasalgethi": "Informative", "Alnilam": "Firm", "Pulcherrima": "Forward",
     "Vindemiatrix": "Gentle", "Sulafat": "Warm",
 }
+
+
+def api_name(name: str) -> str:
+    """The avatar_name Google's API expects for one of our display names.
+
+    Display names can differ from Google's ids: "David" here is Google's "Sam".
+    Anything not in the catalog is passed through unchanged.
+    """
+    return AVATARS.get(name, {}).get("api_name", name)

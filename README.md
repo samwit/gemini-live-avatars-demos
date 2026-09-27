@@ -46,7 +46,7 @@ Try the scripts:
 
 ```bash
 uv run python scripts/01_hello_avatar.py "Tell me a joke about a rabbit" --avatar Kai
-uv run python scripts/03_script_to_video.py --avatar Sam --voice Charon --translate Japanese
+uv run python scripts/03_script_to_video.py --avatar David --voice Charon --translate Japanese
 ```
 
 ### Credentials
@@ -92,7 +92,7 @@ These aren't all obvious from the docs, and most of them cost us a failed test f
 3. **Camera frames use `video=`, not `media=`.** `send_realtime_input(media=Blob(image/jpeg))`, as shown in the docs, fails on 3.8 with *"Mime type 'image/jpeg' is not supported"*. Use `send_realtime_input(video=Blob(...))`.
 4. **Mid-session system instructions.** `send_client_content(role="system")` is silently ignored on 3.8. A realtime text "stage direction" works (`AvatarSession.direct()`), and that's how the Polyglot café teleports.
 5. **`session.receive()` ends after each turn.** Wrap it in `while True:` or your loop stops listening after the first answer.
-6. **Prebuilt avatars:** Jay, Paul, Sam, Ingrid, Kira, Vera (photoreal), and Ben, Kai, Leo, Carmen, Piper (animated). Any avatar works with any of the 30 voices. A bad name fails setup with `Unsupported avatar name`.
+6. **Prebuilt avatars:** Jay, Paul, Sam (shown as **David** in this app; `app/avatars.py` maps the name), Ingrid, Kira, Vera (photoreal), and Ben, Kai, Leo, Carmen, Piper (animated). Any avatar works with any of the 30 voices. A bad name fails setup with `Unsupported avatar name`.
 7. **Custom avatars** (`customized_avatar` with a reference photo; see the *Be the Avatar* demo) and custom voices need allowlisting. Otherwise you get *"Current project is not allowlisted for customized avatar feature."*
 8. **Concurrency is capped** for avatar sessions (we hit `RESOURCE_EXHAUSTED: Maximum concurrent sessions exceeded for Live Avatar use case` at about 6 in a test project). A two-avatar debate is fine.
 9. **Bandwidth.** The default stream is about 5 Mbps. `avatar_config.video_bitrate_bps` controls it, and we default to 1.5 Mbps (`AVATAR_VIDEO_BITRATE`), which still looks great and survives conference Wi-Fi.

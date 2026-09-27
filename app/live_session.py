@@ -38,6 +38,7 @@ from typing import Any, Awaitable, Callable
 from google.genai import types
 
 from . import config
+from .avatars import api_name
 
 log = logging.getLogger("avatar")
 
@@ -94,7 +95,7 @@ class AvatarSession:
     """One Gemini Live session with an avatar.
 
     Usage:
-        async with AvatarSession(avatar="Sam", voice="Charon",
+        async with AvatarSession(avatar="David", voice="Charon",
                                  system_instruction="...", on_event=cb) as s:
             await s.send_text("Hello!")
             ...
@@ -190,7 +191,8 @@ class AvatarSession:
                 ),
                 video_bitrate_bps=config.VIDEO_BITRATE,
             )
-        return types.AvatarConfig(avatar_name=self.avatar, video_bitrate_bps=config.VIDEO_BITRATE)
+        # Translate our display name to Google's id (e.g. "David" -> "Sam").
+        return types.AvatarConfig(avatar_name=api_name(self.avatar), video_bitrate_bps=config.VIDEO_BITRATE)
 
     # -- lifecycle ------------------------------------------------------------------
 

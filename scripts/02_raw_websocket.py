@@ -28,6 +28,7 @@ import websockets
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from app import config  # noqa: E402
+from app.avatars import api_name  # noqa: E402
 
 
 def endpoint_and_auth() -> tuple[str, dict, str]:
@@ -61,7 +62,7 @@ async def main(prompt: str, avatar: str, voice: str, out: str) -> None:
                     "response_modalities": ["VIDEO"],
                     "speech_config": {"voice_config": {"prebuilt_voice_config": {"voice_name": voice}}},
                 },
-                "avatar_config": {"avatar_name": avatar},
+                "avatar_config": {"avatar_name": api_name(avatar)},  # e.g. "David" -> Google's "Sam"
                 "system_instruction": {"parts": [{"text": "You are a cheerful presenter. Be brief."}]},
                 "output_audio_transcription": {},
             }

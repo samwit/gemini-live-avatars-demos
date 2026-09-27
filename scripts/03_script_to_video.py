@@ -5,7 +5,7 @@ Give it a text file of paragraphs and a presenter reads them one by one. Out
 comes a single MP4, with natural idle moments (blinks, breaths) between lines,
 because the avatar's video stream never stops.
 
-    uv run python scripts/03_script_to_video.py scripts/sample_script.txt --avatar Sam --voice Charon
+    uv run python scripts/03_script_to_video.py scripts/sample_script.txt --avatar David --voice Charon
 
 Handy for product walkthroughs, course intros, or localised versions of the
 same script. Add --translate Spanish and the presenter reads it in Spanish.
@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from google.genai import types  # noqa: E402
 
+from app.avatars import api_name  # noqa: E402
 from app.config import MODEL, make_client  # noqa: E402
 
 TELEPROMPTER = """\
@@ -46,7 +47,7 @@ async def main(path: str, avatar: str, voice: str, out: str, translate: str | No
 
     config = types.LiveConnectConfig(
         response_modalities=["VIDEO"],
-        avatar_config=types.AvatarConfig(avatar_name=avatar),  # full default bitrate for recordings
+        avatar_config=types.AvatarConfig(avatar_name=api_name(avatar)),  # full default bitrate for recordings
         speech_config=types.SpeechConfig(
             voice_config=types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=voice))
         ),
@@ -104,7 +105,7 @@ async def main(path: str, avatar: str, voice: str, out: str, translate: str | No
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("script", nargs="?", default=os.path.join(os.path.dirname(__file__), "sample_script.txt"))
-    p.add_argument("--avatar", default="Sam")
+    p.add_argument("--avatar", default="David")
     p.add_argument("--voice", default="Charon")
     p.add_argument("--out", default="presenter.mp4")
     p.add_argument("--translate", help="Perform the script in another language, e.g. Japanese")

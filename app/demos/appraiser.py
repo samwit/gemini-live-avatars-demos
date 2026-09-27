@@ -2,7 +2,7 @@
 Demo 2: The Appraiser, an "Antiques Roadshow" for everyday junk.
 
 Hold anything up to your webcam: a stapler, a banana, your cat. Professor
-Hawthorne (the "Sam" avatar) examines it through the camera, invents an
+Hawthorne (the "David" avatar) examines it through the camera, invents an
 absurdly grand history for it, checks the "auction archives", and issues an
 official Certificate of Appraisal on screen.
 
@@ -146,7 +146,7 @@ class Appraiser(Demo):
     emoji = "🔍"
     tagline = "Hold any object up to your webcam. A pompous professor values it and issues a certificate."
     features = ["Camera vision", "Tools → UI", "Async tools (WHEN_IDLE)"]
-    avatar = "Sam"
+    avatar = "David"
     voice = "Sadaltager"
 
     def system_instruction(self, options):

@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from google.genai import types  # noqa: E402
 
+from app.avatars import api_name  # noqa: E402
 from app.config import MODEL, make_client  # noqa: E402
 
 
@@ -35,7 +36,7 @@ async def main(prompt: str, avatar: str, voice: str, out: str) -> None:
         # (1) VIDEO output = avatar mode.
         response_modalities=["VIDEO"],
         # (2) Which face...
-        avatar_config=types.AvatarConfig(avatar_name=avatar),
+        avatar_config=types.AvatarConfig(avatar_name=api_name(avatar)),
         # ...and which voice.
         speech_config=types.SpeechConfig(
             voice_config=types.VoiceConfig(
@@ -85,7 +86,7 @@ async def main(prompt: str, avatar: str, voice: str, out: str) -> None:
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("prompt", nargs="?", default="Introduce yourself in two sentences.")
-    p.add_argument("--avatar", default="Kai", help="Jay, Paul, Sam, Ingrid, Kira, Vera, Ben, Kai, Leo, Carmen, Piper")
+    p.add_argument("--avatar", default="Kai", help="Jay, Paul, David, Ingrid, Kira, Vera, Ben, Kai, Leo, Carmen, Piper")
     p.add_argument("--voice", default="Puck", help="Any of the 30 prebuilt voices, e.g. Puck, Kore, Charon")
     p.add_argument("--out", default="hello_avatar.mp4")
     args = p.parse_args()
