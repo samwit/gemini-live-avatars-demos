@@ -132,6 +132,16 @@ There's also a **🧭 How it works** page in the app (`/how-it-works.html`) with
 
 All generated audio and video carry Google's SynthID watermark. The avatars are fictional prebuilt characters, and the appraisals, auction records and crimes are made up for fun.
 
+## Security notes
+
+The server holds your Google credentials, so anyone who can reach it can spend your credits. By default it is locked down:
+
+- **Localhost only.** It binds to `127.0.0.1`. Set `HOST=0.0.0.0` only if you really want to share it on a network, and never expose it to the internet without adding your own authentication.
+- **Same-origin WebSockets.** Browser connections from other websites are rejected (HTTP 403), so a malicious page can't drive your local server. Add extra origins with `ALLOWED_ORIGINS` if you put it behind a proxy.
+- **Secrets stay in `.env`**, which is git-ignored. Nothing secret is hard-coded, and the browser never receives a key or token.
+- **Uploaded photos are never logged or saved.** The server logs only which options a demo was started with, not their values.
+- Model output (notes, clues, certificates) is rendered as text, never as HTML.
+
 ## License
 
 Code in this repository is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.

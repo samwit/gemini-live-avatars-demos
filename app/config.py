@@ -44,6 +44,10 @@ MODEL = os.getenv("GEMINI_LIVE_MODEL", "gemini-3.8-live")
 # is much kinder to Wi-Fi when you're demoing on stage. Set to 0 for the default.
 VIDEO_BITRATE = int(os.getenv("AVATAR_VIDEO_BITRATE", "1500000")) or None
 
+# Extra browser origins allowed to open demo WebSockets (comma-separated),
+# e.g. "https://demo.example.com" if you put the app behind a proxy.
+ALLOWED_ORIGINS = {o.strip() for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()}
+
 API_KEY = os.getenv("GOOGLE_API_KEY") or None
 PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT") or None
 LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")

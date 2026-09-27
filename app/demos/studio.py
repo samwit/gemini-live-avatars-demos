@@ -50,7 +50,7 @@ class Studio(Demo):
     features = ["11 avatars × 30 voices", "Personas", "Google Search"]
 
     def system_instruction(self, options):
-        persona = (options.get("persona") or "").strip() or PERSONAS["Helpful guide"]
+        persona = (options.get("persona") or "").strip()[:4000] or PERSONAS["Helpful guide"]
         return persona + "\n\nYou are appearing as a live video avatar. Speak naturally and keep turns short."
 
     def session_kwargs(self, options):

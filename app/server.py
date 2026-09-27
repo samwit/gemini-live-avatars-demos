@@ -19,6 +19,7 @@ import json
 import logging
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 import uvicorn
 from fastapi import FastAPI, WebSocket
@@ -61,9 +62,30 @@ async def catalog():
     })
 
 
+def _origin_allowed(ws: WebSocket) -> bool:
+    """Block other websites from driving this server through your browser.
+
+    Browsers let any web page open a WebSocket to localhost, and CORS doesn't
+    apply to WebSockets. Without this check, a malicious site you visit could
+    start avatar sessions billed to your Google Cloud project. We only accept
+    browser connections whose Origin matches the host serving these pages.
+    Non-browser clients (scripts, tests) send no Origin header and are allowed,
+    because they already run on your machine.
+    """
+    origin = ws.headers.get("origin")
+    if origin is None:
+        return True
+    host = ws.headers.get("host", "")
+    return urlparse(origin).netloc == host or origin in config.ALLOWED_ORIGINS
+
+
 @app.websocket("/ws/{demo_id}")
 async def demo_socket(ws: WebSocket, demo_id: str):
     """One browser tab = one WebSocket = one (or two) Gemini Live sessions."""
+    if not _origin_allowed(ws):
+        log.warning("rejected websocket from origin %s", ws.headers.get("origin"))
+        await ws.close(code=1008)
+        return
     await ws.accept()
     link = BrowserLink(ws)
     demo = DEMOS.get(demo_id)
@@ -75,7 +97,8 @@ async def demo_socket(ws: WebSocket, demo_id: str):
     # The first message from the page carries the options (avatar, city, motion...).
     start = json.loads(await ws.receive_text())
     options = start.get("options", {}) if start.get("type") == "start" else {}
-    log.info("starting demo %s with %s", demo_id, options)
+    # Log option names only: values can include an uploaded photo or persona text.
+    log.info("starting demo %s (options: %s)", demo_id, ", ".join(sorted(options)) or "none")
 
     try:
         await demo.run(link, options)
@@ -111,4 +134,9 @@ app.mount("/", StaticFiles(directory=STATIC, html=True), name="static")
 
 
 if __name__ == "__main__":
-    uvicorn.run("app.server:app", host="0.0.0.0", port=int(os.getenv("PORT", "8000")), reload=False)
+    # Localhost only by default: anyone who can reach this server can spend your
+    # Google Cloud credits. Set HOST=0.0.0.0 deliberately to share it on a network.
+    host = os.getenv("HOST", "127.0.0.1")
+    if host not in ("127.0.0.1", "localhost"):
+        log.warning("Listening on %s: anyone who can reach this port can use your Google credentials.", host)
+    uvicorn.run("app.server:app", host=host, port=int(os.getenv("PORT", "8000")), reload=False)
