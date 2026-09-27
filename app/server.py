@@ -92,6 +92,9 @@ def _friendly(e: Exception) -> str:
     if "API_KEY_SERVICE_BLOCKED" in msg or "are blocked" in msg:
         return ("Your API key isn't allowed to call the Agent Platform API. In Cloud Console → APIs & Services → "
                 "Credentials, edit the key's API restrictions to include it, or use GEMINI_AUTH=adc. (" + msg[:200] + ")")
+    if "invalid authentication credentials" in msg or "invalid_grant" in msg:
+        return ("Google rejected the credentials (expired or invalid). Run `gcloud auth login` "
+                "(or `gcloud auth application-default login`), then press Start again.")
     if "Maximum concurrent sessions" in msg:
         return "Too many avatar sessions are open at once for this project. Close other tabs and try again."
     if "allowlisted" in msg:

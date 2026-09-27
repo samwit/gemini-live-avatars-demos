@@ -23,9 +23,10 @@ audio only.
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
-import time
+from datetime import datetime, timedelta, timezone
 
 from dotenv import load_dotenv
 from google import genai
@@ -71,7 +72,7 @@ def make_client() -> genai.Client:
 
 # --- ADC with a gcloud fallback --------------------------------------------------
 
-_cached_token: tuple[str, float] | None = None
+_cached_token: tuple[str, datetime] | None = None   # (token, expiry in UTC)
 
 
 def _credentials():
@@ -89,15 +90,19 @@ def _credentials():
     except (DefaultCredentialsError, RefreshError):
         pass
 
-    # Fallback: `gcloud auth print-access-token` (valid for ~60 minutes).
-    # We cache it for 45 minutes. Each Live session is created with a fresh
-    # client, so a long-running server keeps working.
+    # Fallback: your `gcloud auth login` token. gcloud hands back its *current*
+    # token, which may be close to expiring, so we ask config-helper for one with
+    # at least 15 minutes left, read its real expiry, and reuse it until 5
+    # minutes before that. A token is only needed when a session connects.
     from google.oauth2.credentials import Credentials
 
     global _cached_token
-    if _cached_token is None or time.time() - _cached_token[1] > 45 * 60:
-        token = subprocess.check_output(
-            ["gcloud", "auth", "print-access-token"], text=True
-        ).strip()
-        _cached_token = (token, time.time())
+    now = datetime.now(timezone.utc)
+    if _cached_token is None or _cached_token[1] - now < timedelta(minutes=5):
+        out = subprocess.check_output(
+            ["gcloud", "config", "config-helper", "--format=json", "--min-expiry=15m"], text=True
+        )
+        cred = json.loads(out)["credential"]
+        expiry = datetime.fromisoformat(cred["token_expiry"].replace("Z", "+00:00"))
+        _cached_token = (cred["access_token"], expiry)
     return Credentials(_cached_token[0])
