@@ -95,7 +95,8 @@ def _friendly(e: Exception) -> str:
     if "Maximum concurrent sessions" in msg:
         return "Too many avatar sessions are open at once for this project. Close other tabs and try again."
     if "allowlisted" in msg:
-        return "This project isn't allowlisted for that feature (custom avatars/voices). " + msg[:200]
+        return ("Custom avatars aren't enabled for this Google Cloud project yet. They're allowlisted: "
+                "ask your Google Cloud account team for access. (" + msg[:160] + ")")
     return msg[:500]
 
 

@@ -107,6 +107,13 @@ The simplest demo. `session_kwargs()` passes the chosen avatar/voice/search thro
 - `_debate()` is plain asyncio: `said = await me.say_and_wait(prompt)` (line ~105), then the next speaker gets `Your opponent just said: "{said}"`. The output transcription is the glue between the two agents.
 - Moderator interjections queue up and are prepended to the next speaker's prompt; the verdict triggers a loser-then-winner reaction.
 
+### 16. Be the Avatar: `demos/custom_avatar.py` + `js/demos/custom.js`
+- **Allowlisted feature:** without access, setup fails with "not allowlisted" and the page explains what to do.
+- The browser crops the upload to Google's spec (9:16, 720×1280 PNG, white background for RGB) with drag-to-pan and zoom, and live-checks sharpness (real source pixels ≥ 704×1280) and the 5 MB limit.
+- The server never trusts the browser: `session_kwargs()` re-checks consent, base64, size and the PNG dimensions (parsed from the header, no imaging library) before anything reaches Google.
+- `AvatarSession._avatar_config()` swaps `avatar_name` for `customized_avatar=CustomizedAvatar(image_data=<bytes>, image_mime_type="image/png")`, and the SDK base64-encodes it.
+- The photo stays in memory for the session only.
+
 ---
 
 ## Adding your own demo

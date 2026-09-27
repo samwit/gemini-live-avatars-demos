@@ -112,8 +112,13 @@ class AvatarSession:
         language_code: str | None = None,
         state: dict | None = None,
         label: str = "avatar",
+        custom_image: bytes | None = None,
+        custom_image_mime: str = "image/png",
     ):
         self.avatar = avatar
+        # A reference photo instead of a prebuilt avatar (allowlisted projects only).
+        self.custom_image = custom_image
+        self.custom_image_mime = custom_image_mime
         self.voice = voice
         self.system_instruction = system_instruction
         self.on_event = on_event
@@ -153,10 +158,7 @@ class AvatarSession:
         return types.LiveConnectConfig(
             # VIDEO is the magic switch: it turns on the avatar.
             response_modalities=["VIDEO"],
-            avatar_config=types.AvatarConfig(
-                avatar_name=self.avatar,
-                video_bitrate_bps=config.VIDEO_BITRATE,
-            ),
+            avatar_config=self._avatar_config(),
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
                     prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name=self.voice)
@@ -175,6 +177,20 @@ class AvatarSession:
                 sliding_window=types.SlidingWindow(target_tokens=50_000),
             ),
         )
+
+    def _avatar_config(self) -> types.AvatarConfig:
+        """A prebuilt avatar by name, or a custom one generated from a reference photo."""
+        if self.custom_image:
+            # The SDK base64-encodes the bytes for us. The docs specify a 9:16
+            # portrait, at least 704x1280, under 5 MB, with PNG recommended.
+            return types.AvatarConfig(
+                customized_avatar=types.CustomizedAvatar(
+                    image_data=self.custom_image,
+                    image_mime_type=self.custom_image_mime,
+                ),
+                video_bitrate_bps=config.VIDEO_BITRATE,
+            )
+        return types.AvatarConfig(avatar_name=self.avatar, video_bitrate_bps=config.VIDEO_BITRATE)
 
     # -- lifecycle ------------------------------------------------------------------
 

@@ -48,8 +48,12 @@
       const card = document.createElement("a");
       card.className = "card";
       card.href = `/${d.id}.html`;
+      // "Be the Avatar" has no prebuilt face, so show an upload tile instead.
+      const thumb = d.id === "custom"
+        ? `<div class="upload-thumb">📸</div>`
+        : `<img src="/img/avatars/${avatarFor[d.id] || d.avatar.toLowerCase()}.jpg" alt="">`;
       card.innerHTML = `
-        <img src="/img/avatars/${avatarFor[d.id] || d.avatar.toLowerCase()}.jpg" alt="">
+        ${thumb}
         <div>
           <h3>${d.emoji} ${d.title}</h3>
           <p>${d.tagline}</p>

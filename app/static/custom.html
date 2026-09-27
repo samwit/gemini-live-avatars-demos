@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Be the Avatar · Gemini Live Avatar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="/">← Demos</a>
+    <h1>📸 Be the Avatar</h1>
+    <span class="spacer"></span>
+    <span class="model">gemini-3.8-live · customized_avatar</span>
+    <span id="status" class="status idle">Idle</span>
+  </header>
+
+  <main class="stage">
+    <!-- Left: before Start this is the photo cropper; after Start it's the live avatar -->
+    <section class="col">
+      <div class="avatar-frame">
+        <video id="avatar" class="avatar" playsinline></video>
+        <div id="overlay" class="overlay crop">
+          <canvas id="cropper" width="720" height="1280"></canvas>
+          <div id="dropHint" class="drop-hint">Drop a portrait photo here<br><small>or use “Choose photo”</small></div>
+          <span>Upload a photo to begin</span>
+        </div>
+        <video id="selfie" class="selfie hidden" muted playsinline></video>
+        <div class="name-tag" id="nameTag">Your avatar</div>
+      </div>
+      <div class="controls">
+        <button id="startBtn" class="btn primary" disabled>Start</button>
+        <button id="micBtn" class="btn">🎙️ Mic</button>
+        <button id="camBtn" class="btn">📷 Camera</button>
+        <div class="meter"><div id="micLevel"></div></div>
+        <label class="toggle" title="Allow interrupting mid-sentence (use headphones)"><input type="checkbox" id="hpToggle"> 🎧</label>
+      </div>
+      <form id="composer" class="composer">
+        <input id="textInput" placeholder="Type a message…" autocomplete="off">
+        <button class="btn">Send</button>
+      </form>
+    </section>
+
+    <!-- Right: photo, personality, consent, transcript -->
+    <section class="col side">
+      <div class="notice">
+        <b>Heads up:</b> custom avatars are an <b>allowlisted</b> feature. If your Google Cloud project
+        hasn't been granted access, Start will show a "not allowlisted" error. Ask your Google Cloud
+        account team to enable it.
+      </div>
+
+      <div class="side-grid" style="flex:0 0 auto">
+        <div class="panel">
+          <h2>1 · Your photo</h2>
+          <div class="controls">
+            <label class="btn" for="file">Choose photo</label>
+            <input type="file" id="file" accept="image/*" hidden>
+            <label class="toggle" style="flex:1">Zoom <input type="range" id="zoom" min="1" max="3" step="0.01" value="1" style="flex:1" disabled></label>
+          </div>
+          <p class="note" style="text-align:left;margin:8px 0">Drag the photo to frame it: head and shoulders filling most of the frame, eyes about a third of the way down.</p>
+          <ul class="checklist" id="checks"></ul>
+        </div>
+
+        <div class="panel">
+          <h2>2 · Voice &amp; personality</h2>
+          <div class="row">
+            <label class="field">Name <input class="text" id="name" placeholder="e.g. Sam" maxlength="40"></label>
+            <label class="field">Voice <select id="voice"></select></label>
+          </div>
+          <label class="field" style="margin-top:8px">Personality
+            <textarea id="persona">You are a friendly, witty assistant. Keep answers to two or three sentences.</textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>3 · Consent</h2>
+        <label class="toggle consent">
+          <input type="checkbox" id="consent">
+          This is my photo, or I have this person's permission to animate it. It is not a photo of a minor or a celebrity.
+        </label>
+        <p class="note" style="text-align:left;margin:6px 0 0">
+          The photo goes to Google only to generate this session's avatar. This app doesn't save it anywhere.
+        </p>
+      </div>
+
+      <div class="panel" style="flex:1;display:flex;flex-direction:column;min-height:160px">
+        <h2>Transcript</h2>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="/js/demos/custom.js"></script>
+</body>
+</html>

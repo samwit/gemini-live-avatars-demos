@@ -15,6 +15,7 @@ Everything here was built and tested against the live API (`gemini-3.8-live`, `g
 | 🕵️ **The Interrogation Room** | Question a lying museum security chief about a stolen sapphire | A character with a hidden truth, tools as game mechanics, **server-side rules** (she *can't* confess until you've found 3 clues) |
 | ☕ **The Polyglot Café** | Order coffee in Paris, then teleport the café to Tokyo mid-sentence | 97 languages, **steering a live session** without reconnecting, `SILENT` async tools |
 | ⚖️ **Avatar Debate Club** | Give two avatars a ridiculous motion and moderate | **Two Live sessions at once**, agent-to-agent relay via transcripts |
+| 📸 **Be the Avatar** | Upload a portrait, frame it, and talk to it as a live avatar | `customized_avatar` from one photo, input validation, consent. **Needs an allowlisted project.** |
 
 | | |
 |---|---|
@@ -92,7 +93,7 @@ These aren't all obvious from the docs, and most of them cost us a failed test f
 4. **Mid-session system instructions.** `send_client_content(role="system")` is silently ignored on 3.8. A realtime text "stage direction" works (`AvatarSession.direct()`), and that's how the Polyglot café teleports.
 5. **`session.receive()` ends after each turn.** Wrap it in `while True:` or your loop stops listening after the first answer.
 6. **Prebuilt avatars:** Jay, Paul, Sam, Ingrid, Kira, Vera (photoreal), and Ben, Kai, Leo, Carmen, Piper (animated). Any avatar works with any of the 30 voices. A bad name fails setup with `Unsupported avatar name`.
-7. **Custom avatars** (`customized_avatar` with a reference photo) and custom voices need allowlisting. Otherwise you get *"Current project is not allowlisted for customized avatar feature."*
+7. **Custom avatars** (`customized_avatar` with a reference photo; see the *Be the Avatar* demo) and custom voices need allowlisting. Otherwise you get *"Current project is not allowlisted for customized avatar feature."*
 8. **Concurrency is capped** for avatar sessions (we hit `RESOURCE_EXHAUSTED: Maximum concurrent sessions exceeded for Live Avatar use case` at about 6 in a test project). A two-avatar debate is fine.
 9. **Bandwidth.** The default stream is about 5 Mbps. `avatar_config.video_bitrate_bps` controls it, and we default to 1.5 Mbps (`AVATAR_VIDEO_BITRATE`), which still looks great and survives conference Wi-Fi.
 10. **Cost.** Generated video is counted as output tokens: roughly **5–6k tokens per second** of avatar speech in our runs (see `usageMetadata`). Check the [pricing page](https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing) before leaving a demo running on a kiosk.
